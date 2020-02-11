@@ -4,18 +4,19 @@ import './search-panel.css';
 
 export default class SearchPanel extends React.Component {
 
-  state = {
-    label: ''
-  }
+
 
   onLabelChange = (e) => {
-    this.setState({ label: e.target.value.toUpperCase() });
+    this.props.onSearch(e.target.value);
   }
   render() {
     return (
       <input type="text"
         className="form-control search-input"
-        placeholder="type to search" />
+        placeholder="type to search"
+       // value={this.state.label}
+        onChange={this.onLabelChange}
+        />
     );
   }
 };

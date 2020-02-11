@@ -14,6 +14,7 @@ export default class App extends Component {
       label,
       important: false,
       done: false,
+      hide: true,
       id: this.maxId++
     }
   }
@@ -28,6 +29,10 @@ export default class App extends Component {
     ]
   }
 
+  onSearch = (text) => {
+    console.log(text);
+    console.log(this.state.todoData.filter((obj)=> obj.label.includes(text)));
+  }
 
 
   onItemAdded = (text) => {
@@ -108,7 +113,7 @@ export default class App extends Component {
       <div className="todo-app" >
         <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
-          <SearchPanel />
+          <SearchPanel onSearch={this.onSearch}/>
           <ItemStatusFilter />
         </div>
 
