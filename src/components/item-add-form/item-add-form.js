@@ -6,9 +6,13 @@ export default class ItemAddForm extends React.Component {
         //const { onAdd } = this.props;
 
         return (
-            <div className="item-add-form">
+            <form className="item-add-form d-flex">
+                <input type="text" 
+                className="form-control" 
+                onChange={this.onLabelChange}
+                placeholder="What needs to be done" />
                 <button onClick={() => this.props.onItemAdded('test')}
-                 className="btn btn-outline-secondary">Add item</button>
-            </div>)
+                 className="btn btn-outline-secondary text-nowrap" >Add Item</button>
+            </form>)
     }
 }
