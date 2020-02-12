@@ -14,7 +14,7 @@ export default class App extends Component {
       label,
       important: false,
       done: false,
-      hide: true,
+      hide: false,
       id: this.maxId++
     }
   }
@@ -26,12 +26,25 @@ export default class App extends Component {
       this.createTodoItem('Drink Coffee'),
       this.createTodoItem('Make Awesome App'),
       this.createTodoItem('Have a lunch')
-    ]
+    ],
+    btn: 'All'
   }
 
+
   onSearch = (text) => {
-    console.log(text);
-    console.log(this.state.todoData.filter((obj)=> obj.label.includes(text)));
+    this.setState(({ todoData }) => {
+      const newStateData = [...todoData];
+      todoData.forEach((obj, index) => {
+        if (obj.label.toLowerCase().includes(text.toLowerCase())) {
+          newStateData[index] = { ...newStateData[index], hide: false };
+        }
+        else {
+          newStateData[index] = { ...newStateData[index], hide: true };
+        }
+
+      });
+      return { todoData: newStateData }
+    });
   }
 
 
@@ -47,13 +60,54 @@ export default class App extends Component {
 
   }
 
-  toggleProperty(arr, id, propname){
+  toggleProperty(arr, id, propname) {
     const idx = arr.findIndex((obj) => obj.id === id);
     const oldItem = arr[idx];
     const newItem = { ...oldItem, [propname]: !oldItem[propname] }
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
 
   }
+
+  onlyDone = () => {
+    this.setState(({ todoData }) => {
+      const newStateData = [...todoData];
+      todoData.forEach((obj, index) => {
+        if (obj.done) {
+          newStateData[index] = { ...newStateData[index], hide: false };
+        }
+        else {
+          newStateData[index] = { ...newStateData[index], hide: true };
+        }
+      });
+      return { todoData: newStateData, btn: 'Done' }
+    });
+  }
+
+  onlyActive = () => {
+    this.setState(({ todoData }) => {
+      const newStateData = [...todoData];
+      todoData.forEach((obj, index) => {
+        if (!obj.done) {
+          newStateData[index] = { ...newStateData[index], hide: false };
+        }
+        else {
+          newStateData[index] = { ...newStateData[index], hide: true };
+        }
+      });
+      return { todoData: newStateData, btn: 'Active' }
+    });
+  }
+
+  all = () => {
+    this.setState(({ todoData }) => {
+      const newStateData = [...todoData];
+      todoData.forEach((obj, index) => newStateData[index] = { ...newStateData[index], hide: false });
+      return { todoData: newStateData, btn: 'All' }
+    });
+  }
+
+
+
 
   onToggleDone = (id) => {
     //MY VARIANT
@@ -108,13 +162,17 @@ export default class App extends Component {
     const { todoData } = this.state;
     const doneCount = todoData.filter((obj) => obj.done === true).length;
     const todoCount = todoData.length - doneCount;
-
+  
     return (
       <div className="todo-app" >
         <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
-          <SearchPanel onSearch={this.onSearch}/>
-          <ItemStatusFilter />
+          <SearchPanel onSearch={this.onSearch} />
+          <ItemStatusFilter 
+          btnActive={this.state.btn}
+          all={this.all} 
+          onlyDone={this.onlyDone} 
+          onlyActive={this.onlyActive} />
         </div>
 
         <TodoList
