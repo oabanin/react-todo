@@ -54,6 +54,10 @@ export default class App extends Component {
     this.setState({ term });
   }
 
+  onFilterChange = (filter) => {
+    this.setState({ filter });
+  }
+
 
   onItemAdded = (text) => {
     const newItem = this.createTodoItem(text);
@@ -75,43 +79,47 @@ export default class App extends Component {
 
   }
 
-  onlyDone = () => {
-    this.setState(({ todoData }) => {
-      const newStateData = [...todoData];
-      todoData.forEach((obj, index) => {
-        if (obj.done) {
-          newStateData[index] = { ...newStateData[index], hide: false };
-        }
-        else {
-          newStateData[index] = { ...newStateData[index], hide: true };
-        }
-      });
-      return { todoData: newStateData, btn: 'Done' }
-    });
-  }
 
-  onlyActive = () => {
-    this.setState(({ todoData }) => {
-      const newStateData = [...todoData];
-      todoData.forEach((obj, index) => {
-        if (!obj.done) {
-          newStateData[index] = { ...newStateData[index], hide: false };
-        }
-        else {
-          newStateData[index] = { ...newStateData[index], hide: true };
-        }
-      });
-      return { todoData: newStateData, btn: 'Active' }
-    });
-  }
 
-  all = () => {
-    this.setState(({ todoData }) => {
-      const newStateData = [...todoData];
-      todoData.forEach((obj, index) => newStateData[index] = { ...newStateData[index], hide: false });
-      return { todoData: newStateData, btn: 'All' }
-    });
-  }
+
+  //MY VARIANT (BAD)
+  // onlyDone = () => {
+  //   this.setState(({ todoData }) => {
+  //     const newStateData = [...todoData];
+  //     todoData.forEach((obj, index) => {
+  //       if (obj.done) {
+  //         newStateData[index] = { ...newStateData[index], hide: false };
+  //       }
+  //       else {
+  //         newStateData[index] = { ...newStateData[index], hide: true };
+  //       }
+  //     });
+  //     return { todoData: newStateData, btn: 'Done' }
+  //   });
+  // }
+
+  // onlyActive = () => {
+  //   this.setState(({ todoData }) => {
+  //     const newStateData = [...todoData];
+  //     todoData.forEach((obj, index) => {
+  //       if (!obj.done) {
+  //         newStateData[index] = { ...newStateData[index], hide: false };
+  //       }
+  //       else {
+  //         newStateData[index] = { ...newStateData[index], hide: true };
+  //       }
+  //     });
+  //     return { todoData: newStateData, btn: 'Active' }
+  //   });
+  // }
+
+  // all = () => {
+  //   this.setState(({ todoData }) => {
+  //     const newStateData = [...todoData];
+  //     todoData.forEach((obj, index) => newStateData[index] = { ...newStateData[index], hide: false });
+  //     return { todoData: newStateData, btn: 'All' }
+  //   });
+  // }
 
 
 
@@ -208,6 +216,7 @@ export default class App extends Component {
           <SearchPanel onSearchChange={this.onSearchChange} />
           <ItemStatusFilter
             filter={filter}
+            onFilterChange={this.onFilterChange}
             // btnActive={this.state.btn}
             // all={this.all}
             // onlyDone={this.onlyDone}
